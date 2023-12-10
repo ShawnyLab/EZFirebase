@@ -8,7 +8,7 @@
 import FirebaseStorage
 import Foundation
 
-public class EZFirestore {
+public class EZStorage {
     static private let ref = Storage.storage().reference()
 
     public func save(path: String, name: String?, data: Data) async throws -> URL {
