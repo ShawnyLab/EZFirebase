@@ -7,8 +7,8 @@ version 1.0.0
 
 You can use Firebase Firestore easier.
 
-🅾️ Firestore
-❌ Realtime Database ( Working on... )
+✅ Firestore   
+❌ Realtime Database ( Working on... )   
 ❌ Storage (Working on... )
 
 ## Before
