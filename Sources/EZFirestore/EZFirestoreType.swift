@@ -9,6 +9,9 @@ import Foundation
 
 protocol EZFirestoreType {
     @available(iOS 13.0.0, *)
+    static func save(model: Codable, path: String, completion: @escaping () -> ())
+    
+    @available(iOS 13.0.0, *)
     static func save(model: Codable, path: String) async throws -> ()
     
     @available(iOS 13.0.0, *)

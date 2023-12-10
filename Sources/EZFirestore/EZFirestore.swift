@@ -8,8 +8,44 @@
 import FirebaseFirestoreInternal
 
 public class EZFirestore: EZFirestoreType {
-
+    
     static private let db = Firestore.firestore()
+    
+    @available(iOS 13.0.0, *)
+    static func save(model: Codable, path: String, completion: @escaping () -> ()) {
+        do {
+            let encodedJson = try JSONEncoder().encode(model)
+            
+            guard let json = try JSONSerialization.jsonObject(with: encodedJson) as? [String : Any] else {
+                print("[SwiftyFirebase] failed")
+                throw EZFirestoreError.encodingFailed
+            }
+            
+            //Identifiable
+            if let model = model as? (any Identifiable) {
+                db.collection(path).document(model.id as! String).setData(json, merge: true) { error in
+                    if let error {
+                        print("[SwiftyFirebase] failed")
+                        print(error)
+                    }
+                    
+                    completion()
+                }
+            } else {
+                db.collection(path).addDocument(data: json) { error in
+                    if let error {
+                        print("[SwiftyFirebase] failed")
+                        print(error)
+                    }
+                    
+                    completion()
+                }
+            }
+            
+        } catch {
+            print(error)
+        }
+    }
     
     @available(iOS 13.0.0, *)
     public static func save(model: Codable, path: String) async throws {
