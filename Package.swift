@@ -10,12 +10,17 @@ let package = Package(
         .library(
             name: "EZFirebase",
             targets: ["EZFirebase"]),
+        .library(name: "EZFirestore", targets: ["EZFirestore"])
+    ],
+    dependencies: [
+        .package(url: "https://github.com/firebase/firebase-ios-sdk.git", from: "10.18.0"),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
             name: "EZFirebase"),
+        .target(name: "EZFirestore"),
         .testTarget(
             name: "EZFirebaseTests",
             dependencies: ["EZFirebase"]),
