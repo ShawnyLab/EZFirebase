@@ -7,6 +7,10 @@ version 1.0.0
 
 You can use Firebase Firestore easier.
 
+-[O] Firestore
+-[X] Realtime Database
+-[X] Storage
+
 ## Before
 Firestore.firestore().collection("users").getDocuments...... 
 
