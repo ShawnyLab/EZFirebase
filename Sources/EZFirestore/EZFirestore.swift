@@ -8,7 +8,7 @@
 import FirebaseFirestoreInternal
 
 public class EZFirestore: EZFirestoreType {
-    
+
     static private let db = Firestore.firestore()
     
     @available(iOS 13.0.0, *)
@@ -41,6 +41,37 @@ public class EZFirestore: EZFirestoreType {
         return model
     }
     
+    static func fetch<T>(type: T.Type, path: String, id: String, completion: @escaping (T?) -> ()) where T : Decodable, T : Encodable  {
+        db.collection(path).document(id).getDocument { snapshot, error in
+            if let error {
+                print(error)
+                completion(nil)
+                return
+            }
+            
+            guard let snapshot else {
+                print("🔥 EZFirestore Error : EMPTY data in the path")
+                completion(nil)
+                return
+            }
+            guard let data = snapshot.data() else {
+                print("🔥 EZFirestore Error : Snapshot To Dictionary Failed")
+                completion(nil)
+                return
+            }
+            
+            do {
+                let jsonData = try JSONSerialization.data(withJSONObject: data)
+
+                let model = try JSONDecoder().decode(T.self, from: jsonData)
+                
+                completion(model)
+            } catch {
+                print("🔥 EZFirestore Error : \(error.localizedDescription)")
+            }
+        }
+    }
+    
     @available(iOS 13.0.0, *)
     public static func fetchList<T: Codable>(of: T.Type, path: String) async throws -> [T] {
         let snapshots = try await db.collection(path).getDocuments()
@@ -56,5 +87,35 @@ public class EZFirestore: EZFirestoreType {
         }
         
         return models
+    }
+    
+    static func fetchList<T>(of: T.Type, path: String, completion: @escaping ([T]) -> ()) where T : Decodable, T : Encodable  {
+        db.collection(path).getDocuments { snapshot, error in
+            if let error {
+                print(error)
+                completion([])
+                return
+            }
+            
+            guard let snapshot else {
+                print("🔥 EZFirestore Error : EMPTY data in the path")
+                completion([])
+                return
+            }
+            
+            var models: [T] = []
+
+            for data in snapshot.documents {
+                do {
+                    let jsonData = try JSONSerialization.data(withJSONObject: data.data())
+                    let model = try JSONDecoder().decode(T.self, from: jsonData)
+                    models.append(model)
+                } catch {
+                    print(error)
+                }
+            }
+            
+            completion(models)
+        }
     }
 }
