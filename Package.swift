@@ -23,7 +23,8 @@ let package = Package(
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
             name: "EZFirebase"),
-        .target(name: "EZFirestore"),
+        .target(name: "EZFirestore",
+                dependencies: [.product(name: "FirebaseFirestore", package: "firebase-ios-sdk")]),
         .target(name: "EZStorage",
                 dependencies: [.product(name: "FirebaseStorage", package: "firebase-ios-sdk")]),
         .testTarget(

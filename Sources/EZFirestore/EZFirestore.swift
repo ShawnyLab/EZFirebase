@@ -5,7 +5,7 @@
 //  Created by 박진서 on 12/10/23.
 //
 
-import FirebaseFirestoreInternal
+import FirebaseFirestore
 
 public class EZFirestore: EZFirestoreType {
     
