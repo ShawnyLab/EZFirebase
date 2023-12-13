@@ -12,7 +12,7 @@ public class EZFirestore: EZFirestoreType {
     static private let db = Firestore.firestore()
     
     @available(iOS 13.0.0, *)
-    static func save(model: Codable, path: String, completion: @escaping () -> ()) {
+    public static func save(model: Codable, path: String, completion: @escaping () -> ()) {
         do {
             let encodedJson = try JSONEncoder().encode(model)
             

@@ -12,7 +12,7 @@ import UIKit
 public class EZStorage {
     static private let ref = Storage.storage().reference()
     
-    static func save(data: Data, path: String) async throws -> URL {
+    public static func save(data: Data, path: String) async throws -> URL {
         
         let storageRef = ref.child(path)
         
@@ -20,7 +20,7 @@ public class EZStorage {
         return try await storageRef.downloadURL()
     }
     
-    static func save(data: Data, path: String, completion: @escaping (URL) -> ()) {
+    public static func save(data: Data, path: String, completion: @escaping (URL) -> ()) {
         
         let storageRef = ref.child(path)
         
@@ -52,7 +52,7 @@ public class EZStorage {
         }
     }
     
-    static func saveImage(image: UIImage, path: String, _ quality: CGFloat = 1.0) async throws -> URL {
+    public static func saveImage(image: UIImage, path: String, _ quality: CGFloat = 1.0) async throws -> URL {
 
         let storageRef = ref.child(path)
         
