@@ -7,6 +7,7 @@
 
 import Foundation
 
+@available(iOS 15.0.0, *)
 extension EZStorage {
     enum EZStorageError: Error {
         case imageToDataFailed
