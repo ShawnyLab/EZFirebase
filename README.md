@@ -15,7 +15,7 @@ You can use Firebase Firestore easier.
 Firestore.firestore().collection("users").getDocuments...... 
 
 ## After
-let users = try await ShawnyFirestore.fetchList(of: UserModel.self, path: "users")
+let users = try await EZFirestore.fetchList(of: UserModel.self, path: "users")
 
 
 
