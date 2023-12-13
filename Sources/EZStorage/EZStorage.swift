@@ -9,7 +9,7 @@ import FirebaseStorage
 import UIKit
 
 @available(iOS 15.0.0, *)
-open class EZStorage {
+public class EZStorage {
     static private let ref = Storage.storage().reference()
     
     static func save(data: Data, path: String) async throws -> URL {
