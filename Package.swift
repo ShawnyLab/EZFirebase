@@ -11,6 +11,7 @@ let package = Package(
             name: "EZFirebase",
             targets: ["EZFirebase"]),
         .library(name: "EZFirestore", targets: ["EZFirestore"]),
+        .library(name: "EZStorage", targets: ["EZStorage"])
     ],
     dependencies: [
         .package(url: "https://github.com/firebase/firebase-ios-sdk.git", from: "10.18.0"),
@@ -21,6 +22,7 @@ let package = Package(
         .target(
             name: "EZFirebase"),
         .target(name: "EZFirestore"),
+        .target(name: "EZStorage"),
         .testTarget(
             name: "EZFirebaseTests",
             dependencies: ["EZFirebase"]),
