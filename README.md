@@ -19,7 +19,7 @@ let users = try await ShawnyFirestore.fetchList(of: UserModel.self, path: "users
 
 
 
-### 1.  import ShawnyFirestore
+### 1.  import EZFireStore
 
 ### 2. use functions
 - save
