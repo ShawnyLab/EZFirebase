@@ -5,6 +5,7 @@
 //  Created by 박진서 on 12/13/23.
 //
 
+import Firebase
 import FirebaseStorage
 
 open class EZStorage {
