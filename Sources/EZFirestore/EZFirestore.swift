@@ -17,7 +17,7 @@ public class EZFirestore: EZFirestoreType {
             let encodedJson = try JSONEncoder().encode(model)
             
             guard let json = try JSONSerialization.jsonObject(with: encodedJson) as? [String : Any] else {
-                print("[SwiftyFirebase] failed")
+                print("[EZFirebase] failed")
                 throw EZFirestoreError.encodingFailed
             }
             
@@ -25,7 +25,7 @@ public class EZFirestore: EZFirestoreType {
             if let model = model as? (any Identifiable) {
                 db.collection(path).document(model.id as! String).setData(json, merge: true) { error in
                     if let error {
-                        print("[SwiftyFirebase] failed")
+                        print("[EZFirebase] failed")
                         print(error)
                     }
                     
@@ -34,7 +34,7 @@ public class EZFirestore: EZFirestoreType {
             } else {
                 db.collection(path).addDocument(data: json) { error in
                     if let error {
-                        print("[SwiftyFirebase] failed")
+                        print("[EZFirebase] failed")
                         print(error)
                     }
                     
@@ -52,7 +52,7 @@ public class EZFirestore: EZFirestoreType {
         let encodedJson = try JSONEncoder().encode(model)
         
         guard let json = try JSONSerialization.jsonObject(with: encodedJson) as? [String : Any] else {
-            print("[SwiftyFirebase] failed")
+            print("[EZFirebase] failed")
             throw EZFirestoreError.encodingFailed
         }
         
