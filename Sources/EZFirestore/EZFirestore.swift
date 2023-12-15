@@ -109,8 +109,9 @@ public class EZFirestore: EZFirestoreType {
     }
     
     @available(iOS 13.0.0, *)
-    public static func fetchList<T: Codable>(of: T.Type, path: String) async throws -> [T] {
-        let snapshots = try await db.collection(path).getDocuments()
+    public static func fetchList<T: Codable>(of: T.Type, path: String, last: String, orderBy: String, limit: Int = 20) async throws -> [T] {
+        let snapshots = try await db.collection(path).whereField(orderBy, isGreaterThan: last).limit(to: limit).getDocuments()
+
         var models: [T] = []
         
         for snapshot in snapshots.documents {
