@@ -8,10 +8,9 @@
 import FirebaseFirestore
 
 public class EZFirestore: EZFirestoreType {
-    
+
     static private let db = Firestore.firestore()
     
-    @available(iOS 13.0.0, *)
     public static func save(model: Codable, path: String, completion: @escaping () -> ()) {
         do {
             let encodedJson = try JSONEncoder().encode(model)
@@ -47,7 +46,6 @@ public class EZFirestore: EZFirestoreType {
         }
     }
     
-    @available(iOS 13.0.0, *)
     public static func save(model: Codable, path: String) async throws {
         let encodedJson = try JSONEncoder().encode(model)
         
@@ -64,7 +62,6 @@ public class EZFirestore: EZFirestoreType {
         }
     }
     
-    @available(iOS 13.0.0, *)
     public static func fetch<T: Codable>(type: T.Type, path: String, id: String) async throws -> T {
         let snapshot = try await db.collection(path).document(id).getDocument()
         guard let data = snapshot.data() else {
@@ -77,7 +74,7 @@ public class EZFirestore: EZFirestoreType {
         return model
     }
     
-    static func fetch<T>(type: T.Type, path: String, id: String, completion: @escaping (T?) -> ()) where T : Decodable, T : Encodable  {
+    static func fetch<T>(type: T.Type, path: String, id: String, completion: @escaping (T?) -> ()) where T : Decodable, T : Encodable {
         db.collection(path).document(id).getDocument { snapshot, error in
             if let error {
                 print(error)
@@ -107,8 +104,7 @@ public class EZFirestore: EZFirestoreType {
             }
         }
     }
-    
-    @available(iOS 13.0.0, *)
+
     public static func fetchList<T: Codable>(of: T.Type, path: String, last: String, orderBy: String, limit: Int = 20) async throws -> [T] {
         let snapshots = try await db.collection(path).whereField(orderBy, isGreaterThan: last).limit(to: limit).getDocuments()
 
@@ -126,7 +122,7 @@ public class EZFirestore: EZFirestoreType {
         return models
     }
     
-    static func fetchList<T>(of: T.Type, path: String, completion: @escaping ([T]) -> ()) where T : Decodable, T : Encodable  {
+    static func fetchList<T>(of: T.Type, path: String, completion: @escaping ([T]) -> ()) where T : Decodable, T : Encodable {
         db.collection(path).getDocuments { snapshot, error in
             if let error {
                 print(error)
@@ -154,5 +150,22 @@ public class EZFirestore: EZFirestoreType {
             
             completion(models)
         }
+    }
+    
+    static func fetchWithFilter<T>(of: T.Type, path: String, key: String, filters: [String], last: String, orderBy: String, limit: Int = 20) async throws -> [T] where T : Decodable, T : Encodable {
+        let snapshots = try await db.collection(path).whereField(key, arrayContains: filters).whereField(orderBy, isGreaterThan: last).limit(to: limit).getDocuments()
+
+        var models: [T] = []
+        
+        for snapshot in snapshots.documents {
+            let data = snapshot.data()
+            
+            let jsonData = try JSONSerialization.data(withJSONObject: data)
+
+            let model = try JSONDecoder().decode(T.self, from: jsonData)
+            models.append(model)
+        }
+        
+        return models
     }
 }
