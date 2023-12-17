@@ -152,9 +152,16 @@ public class EZFirestore: EZFirestoreType {
         }
     }
     
-    static func fetchWithFilter<T>(of: T.Type, path: String, key: String, filters: [String], last: String, orderBy: String, limit: Int = 20) async throws -> [T] where T : Decodable, T : Encodable {
-        let snapshots = try await db.collection(path).whereField(key, arrayContains: filters).whereField(orderBy, isGreaterThan: last).limit(to: limit).getDocuments()
-
+    static func fetchWithFilter<T>(of: T.Type, path: String, keys: [String], filters: [[String]], last: String, orderBy: String, limit: Int = 20) async throws -> [T] where T : Decodable, T : Encodable {
+        
+        func getFilters() -> [Filter] {
+            return Array(0..<keys.count).map {
+                return Filter.whereField(keys[$0], arrayContains: filters[$0])
+            }
+        }
+        
+        let snapshots = try await db.collection(path).whereFilter(Filter.andFilter(getFilters())).getDocuments()
+        
         var models: [T] = []
         
         for snapshot in snapshots.documents {
