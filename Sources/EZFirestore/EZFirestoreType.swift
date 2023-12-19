@@ -21,5 +21,5 @@ protocol EZFirestoreType {
 
     static func fetchList<T: Codable>(of: T.Type, path: String, completion: @escaping ([T]) -> ())
     
-    static func fetchWithFilter<T: Codable>(of: T.Type, path: String, filter: Filter, last: String, orderBy: String, limit: Int) async throws -> [T]
+    static func fetchWithFilter<T: Codable>(of: T.Type, path: String, filters: Filter, last: String, orderBy: String, limit: Int) async throws -> [T]
 }
