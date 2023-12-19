@@ -175,4 +175,22 @@ public class EZFirestore: EZFirestoreType {
         
         return models
     }
+    
+    static func search<T>(of: T.Type, path: String, filter: Filter, last: String, orderBy: String, limit: Int = 20) async throws -> [T] where T : Decodable, T : Encodable {
+
+        let snapshots = try await db.collection(path).whereFilter(filter).getDocuments()
+        
+        var models: [T] = []
+        
+        for snapshot in snapshots.documents {
+            let data = snapshot.data()
+            
+            let jsonData = try JSONSerialization.data(withJSONObject: data)
+
+            let model = try JSONDecoder().decode(T.self, from: jsonData)
+            models.append(model)
+        }
+        
+        return models
+    }
 }
