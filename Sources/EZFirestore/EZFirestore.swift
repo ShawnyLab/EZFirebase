@@ -122,7 +122,7 @@ public class EZFirestore: EZFirestoreType {
         return models
     }
     
-    static func fetchList<T>(of: T.Type, path: String, completion: @escaping ([T]) -> ()) where T : Decodable, T : Encodable {
+    public static func fetchList<T>(of: T.Type, path: String, completion: @escaping ([T]) -> ()) where T : Decodable, T : Encodable {
         db.collection(path).getDocuments { snapshot, error in
             if let error {
                 print(error)
@@ -152,7 +152,7 @@ public class EZFirestore: EZFirestoreType {
         }
     }
     
-    static func fetchWithFilter<T>(of: T.Type, path: String, filters: Filter, last: String, orderBy: String, limit: Int = 20) async throws -> [T] where T : Decodable, T : Encodable {
+    public static func fetchWithFilter<T>(of: T.Type, path: String, filters: Filter, last: String, orderBy: String, limit: Int = 20) async throws -> [T] where T : Decodable, T : Encodable {
         
         let snapshots = try await db.collection(path).whereFilter(filters).getDocuments()
         
@@ -170,7 +170,7 @@ public class EZFirestore: EZFirestoreType {
         return models
     }
     
-    static func search<T>(of: T.Type, path: String, filter: Filter, last: String, orderBy: String, limit: Int = 20) async throws -> [T] where T : Decodable, T : Encodable {
+    public static func search<T>(of: T.Type, path: String, filter: Filter, last: String, orderBy: String, limit: Int = 20) async throws -> [T] where T : Decodable, T : Encodable {
 
         let snapshots = try await db.collection(path).whereFilter(filter).getDocuments()
         
