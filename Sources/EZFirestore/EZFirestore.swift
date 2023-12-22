@@ -108,9 +108,9 @@ public class EZFirestore: EZFirestoreType {
     public static func fetchList<T: Codable>(of: T.Type, path: String, last: String, orderBy: String, limit: Int = 20, ascending: Bool = true) async throws -> [T] {
         var snapshots: QuerySnapshot!
         if ascending {
-            snapshots = try await db.collection(path).whereField(orderBy, isGreaterThan: last).limit(to: limit).getDocuments()
+            snapshots = try await db.collection(path).whereField(orderBy, isGreaterThan: last).order(by: orderBy).limit(to: limit).getDocuments()
         } else {
-            snapshots = try await db.collection(path).whereField(orderBy, isLessThan: last).limit(to: limit).getDocuments()
+            snapshots = try await db.collection(path).whereField(orderBy, isLessThan: last).order(by: orderBy, descending: true).limit(to: limit).getDocuments()
         }
 
         var models: [T] = []
