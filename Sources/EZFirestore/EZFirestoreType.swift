@@ -17,7 +17,7 @@ protocol EZFirestoreType {
     
     static func fetch<T: Codable>(type: T.Type, path: String, id: String, completion: @escaping (T?) -> ())
     
-    static func fetchList<T: Codable>(of: T.Type, path: String, last: String, orderBy: String, limit: Int) async throws -> [T]
+    static func fetchList<T: Codable>(of: T.Type, path: String, last: String, orderBy: String, limit: Int, ascending: Bool) async throws -> [T]
 
     static func fetchList<T: Codable>(of: T.Type, path: String, completion: @escaping ([T]) -> ())
     
