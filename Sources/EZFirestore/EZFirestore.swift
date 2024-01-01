@@ -159,7 +159,7 @@ public class EZFirestore: EZFirestoreType {
     
     public static func fetchWithFilter<T>(of: T.Type, path: String, filters: Filter, last: String, orderBy: String, limit: Int = 20) async throws -> [T] where T : Decodable, T : Encodable {
         
-        let snapshots = try await db.collection(path).whereFilter(filters).getDocuments()
+        let snapshots = try await db.collection(path).whereFilter(filters).whereField(orderBy, isGreaterThan: last).order(by: orderBy).limit(to: limit).getDocuments()
         
         var models: [T] = []
         
